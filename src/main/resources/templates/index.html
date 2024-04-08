@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>XML Converter</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/js/jQuery.js"></script>
+    <script src="/js/converter.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form id="converterForm" class="mb-4">
+                <div class="form-group">
+                    <label for="lineBasedInput">Linebased input:</label>
+                    <textarea class="form-control" id="lineBasedInput" name="lineBasedInput" rows="20" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Convert</button>
+            </form>
+        </div>
+        <div class="col">
+            <label for="result">Result:</label>
+            <div class="border p-3" style="height: 100%;">
+                <div id="result">
+                    <!-- Result will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+</body>
+</html>
