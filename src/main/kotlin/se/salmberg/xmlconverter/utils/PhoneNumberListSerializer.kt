@@ -7,9 +7,12 @@ import com.fasterxml.jackson.databind.SerializerProvider
 class PhoneNumberListSerializer : JsonSerializer<MutableList<String>>() {
     override fun serialize(numbers: MutableList<String>?, gen: JsonGenerator, provider: SerializerProvider?) {
 
-        if (numbers.isNullOrEmpty()) {
-            return
-        }
+//        if (numbers.isNullOrEmpty()){
+////            gen.writeStartObject()
+////            gen.writeStringField("","")
+////            gen.writeNullField("")
+////            gen.writeEndObject()
+//        }
         gen.writeStartObject()
 
         numbers?.forEach {

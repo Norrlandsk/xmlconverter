@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
     $("#converterForm").submit(function(event) {
+        $("#result").empty();
         event.preventDefault();
         var formData = $(this).serialize();
         $.ajax({

@@ -1,6 +1,5 @@
 package se.salmberg.xmlconverter.entities
 
-import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
@@ -14,7 +13,6 @@ data class People(
     var peopleList: List<Person> = mutableListOf()
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Person(
     var firstname: String? = null,
     var lastname: String? = null,
@@ -24,14 +22,12 @@ data class Person(
     var family: MutableList<FamilyMember> = mutableListOf()
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class Address(
     var street: String? = null,
     var city: String? = null,
     var postalnumber: String? = null
 )
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class FamilyMember(
     var name: String? = null,
     var born: String? = null,

@@ -1,5 +1,6 @@
 package se.salmberg.xmlconverter.services
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
@@ -8,28 +9,6 @@ import se.salmberg.xmlconverter.entities.*
 
 @Service
 class ConverterService {
-    //1. Ta in input
-    //2. Dela up i P-objekt
-    //3. Dela upp varje P-objekt i T A F
-    //4. Bygg ihop till xml med templates
-
-//    P|firstname|lastname
-//    T|mobile|telephone
-//    A|street|city|postalnumber
-//    F|name|year
-//    P can be followed by T, A and F
-//    F can be followed by T and A
-
-//    P|Carl Gustaf|Bernadotte
-//    T|0768-101801|08-101801
-//    A|Drottningholms slott|Stockholm|10001
-//    F|Victoria|1977
-//    A|Haga Slott|Stockholm|10002
-//    F|Carl Philip|1979
-//    T|0768-101802|08-101802
-//    P|Barack|Obama
-//    A|1600 Pennsylvania Avenue|Washington, D.C
-
 
     fun convertToXML(linebasedInput: String): String {
         val peopleList: MutableList<Person> = mutableListOf()
@@ -100,11 +79,11 @@ class ConverterService {
             JacksonXmlModule().apply { setDefaultUseWrapper(false) }
         ).apply {
             enable(SerializationFeature.INDENT_OUTPUT)
-            disable(SerializationFeature.WRAP_ROOT_VALUE)
+            enable(SerializationFeature.WRAP_ROOT_VALUE)
+            setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+            setSerializationInclusion(JsonInclude.Include.NON_NULL)
         }
         val people = People(peopleList)
-        val xml = xmlMapper.writeValueAsString(people)
-        xml
-        return xml
+        return xmlMapper.writeValueAsString(people)
     }
 }
