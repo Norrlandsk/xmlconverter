@@ -14,6 +14,7 @@ class ConverterController (
     fun submit(
         @RequestParam lineBasedInput: String
     ): String {
-        return converterService.convertToXML(lineBasedInput)
+        val objectList = converterService.extractObjectsFromInput(lineBasedInput)
+        return converterService.convertObjectListToXml(objectList)
     }
 }
