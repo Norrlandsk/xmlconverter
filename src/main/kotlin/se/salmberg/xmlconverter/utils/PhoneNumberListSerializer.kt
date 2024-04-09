@@ -7,21 +7,22 @@ import com.fasterxml.jackson.databind.SerializerProvider
 /*
 * NOT WORKING PROPERLY*/
 class PhoneNumberListSerializer : JsonSerializer<MutableList<String>>() {
-    override fun serialize(numbers: MutableList<String>?, gen: JsonGenerator, provider: SerializerProvider?) {
 
-//        if (numbers.isNullOrEmpty()){
-//            return
-//        }
+    override fun serialize(numbers: MutableList<String>?, gen: JsonGenerator, provider: SerializerProvider) {
 
-        gen.writeStartObject()
+//            if (numbers.isNullOrEmpty()){
+//                return
+//            }
 
-        numbers?.forEach {
-            if (it.startsWith("07")) {
-                gen.writeStringField("mobile", it)
-            } else {
-                gen.writeStringField("phone", it)
+            gen.writeStartObject()
+
+            numbers?.forEach {
+                if (it.startsWith("07")) {
+                    gen.writeStringField("mobile", it)
+                } else {
+                    gen.writeStringField("phone", it)
+                }
             }
-        }
-        gen.writeEndObject()
+            gen.writeEndObject()
     }
 }

@@ -19,19 +19,19 @@ class ConverterService {
     * currentFamilyMember placeholder is reinitialized with new FamilyMember object. When for loop is over, existing
     * FamilyMember/Person objects are stored, and peopleList is returned.
     * */
-    fun extractObjectsFromInput(linebasedInput: String): List<Person> {
+    fun extractObjectsFromInput(linebasedInput: String?): List<Person> {
 
         val peopleList: MutableList<Person> = mutableListOf()
         var currentPerson: Person? = null
         var currentFamilyMember: FamilyMember? = null
 
-        val lines = linebasedInput.trim().split("\n")
+        val lines = linebasedInput?.trim()?.split("\n") ?: emptyList()
 
         for (line in lines) {
 
             val lineSections = line.trim().split("|")
 
-            when (lineSections[0]) {
+            when (lineSections[0].uppercase()) {
                 "P" -> {
                     if (currentFamilyMember != null) {
                         currentPerson?.family?.add(currentFamilyMember)
@@ -42,11 +42,14 @@ class ConverterService {
                         peopleList.add(currentPerson)
                     }
 
-                    currentPerson = Person(firstname = lineSections[1], lastname = lineSections[2])
+                    currentPerson = Person(
+                        firstname = lineSections.getOrNull(1)?.takeIf { it.isNotBlank() },
+                        lastname = lineSections.getOrNull(2)?.takeIf { it.isNotBlank() }
+                    )
                 }
 
                 "T" -> {
-                    val phoneNumbers = lineSections.subList(1, lineSections.size)
+                    val phoneNumbers = lineSections.subList(1, lineSections.size).filter { it.isNotBlank() }
 
                     if (currentFamilyMember != null) {
                         currentFamilyMember.phone?.addAll(phoneNumbers)
@@ -56,28 +59,25 @@ class ConverterService {
                 }
 
                 "A" -> {
-                    if (currentFamilyMember != null) {
-                        currentFamilyMember.address = Address(
-                            street = lineSections.getOrNull(1),
-                            city = lineSections.getOrNull(2),
-                            postalnumber = lineSections.getOrNull(3)
-                        )
-                    } else {
-                        currentPerson?.address = Address(
-                            street = lineSections.getOrNull(1),
-                            city = lineSections.getOrNull(2),
-                            postalnumber = lineSections.getOrNull(3)
-                        )
+                    val address = Address(
+                        street = lineSections.getOrNull(1)?.takeIf { it.isNotBlank() },
+                        city = lineSections.getOrNull(2)?.takeIf { it.isNotBlank() },
+                        postalnumber = lineSections.getOrNull(3)?.takeIf { it.isNotBlank() }
+                    )
+
+                    when {
+                        currentFamilyMember != null -> currentFamilyMember.address = address
+                        else -> currentPerson?.address = address
                     }
                 }
 
                 "F" -> {
                     val familyMemberSection = lineSections.subList(1, lineSections.size)
-                    if (currentFamilyMember != null) {
-                        currentPerson?.family?.add(currentFamilyMember)
-                    }
-                    currentFamilyMember =
-                        FamilyMember(name = familyMemberSection[0], born = familyMemberSection[1])
+                    val name = familyMemberSection.getOrNull(0)?.takeIf { it.isNotBlank() }
+                    val born = familyMemberSection.getOrNull(1)?.takeIf { it.isNotBlank() }
+
+                    currentFamilyMember?.let { currentPerson?.family?.add(it) }
+                    currentFamilyMember = FamilyMember(name = name, born = born)
                 }
             }
         }

@@ -1,5 +1,8 @@
 package se.salmberg.xmlconverter.entities
 
+import com.fasterxml.jackson.annotation.JsonGetter
+import com.fasterxml.jackson.annotation.JsonSetter
+import com.fasterxml.jackson.annotation.Nulls
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
@@ -16,7 +19,7 @@ data class People(
 data class Person(
     var firstname: String? = null,
     var lastname: String? = null,
-    @field:JsonSerialize(using = PhoneNumberListSerializer::class)
+//    @field:JsonSerialize(using = PhoneNumberListSerializer::class)
     var phone: MutableList<String>? = mutableListOf(),
     var address: Address? = null,
     var family: MutableList<FamilyMember> = mutableListOf()
@@ -31,7 +34,7 @@ data class Address(
 data class FamilyMember(
     var name: String? = null,
     var born: String? = null,
-    @field:JsonSerialize(using = PhoneNumberListSerializer::class)
+//    @field:JsonSerialize(using = PhoneNumberListSerializer::class)
     var phone: MutableList<String>? = mutableListOf(),
     var address: Address? = null
 )

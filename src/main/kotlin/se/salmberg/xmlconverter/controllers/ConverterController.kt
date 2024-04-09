@@ -5,16 +5,19 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import se.salmberg.xmlconverter.services.ConverterService
+import se.salmberg.xmlconverter.utils.XmlPostProcessing
 
 @RestController
 class ConverterController (
-    @Autowired val converterService: ConverterService
+    @Autowired val converterService: ConverterService,
+    @Autowired val xmlPostProcessing: XmlPostProcessing
 ){
     @PostMapping("/submit")
     fun submit(
-        @RequestParam lineBasedInput: String
+        @RequestParam lineBasedInput: String?
     ): String {
         val objectList = converterService.extractObjectsFromInput(lineBasedInput)
-        return converterService.convertObjectListToXml(objectList)
+        val xml = converterService.convertObjectListToXml(objectList)
+        return xmlPostProcessing.createMobileXmlTags(xml)
     }
 }
